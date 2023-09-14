@@ -1,8 +1,23 @@
-import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Header = () => {
-  const [role, setRole] = useState("hospital");
+  const router = useNavigate();
+  const users = useSelector((state) => state.login.userLogin);
+  
+ 
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("User");
+      toast("Logout Success");
+      window.location.replace("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <section className="header">
@@ -12,7 +27,7 @@ const Header = () => {
               Navbar
             </Link>
             <h2 className="navbar-nav mx-auto mb-2 mb-lg-0 mob-sidebar">
-            Medical Report Maker
+              Medical Report Maker
             </h2>
             <button
               className="navbar-toggler desktop"
@@ -26,26 +41,31 @@ const Header = () => {
               <span className="navbar-toggler-icon"></span>
             </button>
             <h2 className="navbar-nav mx-auto mb-2 mb-lg-0 desktop">
-            Medical Report Maker
+              Medical Report Maker
             </h2>
             <div className="" id="navbarSupportedContent">
               <span className="desktop">
                 <div className="d-flex align-items-center is-auth">
-                  <Link to="#" className="">
-                    admin
+                  <Link to="#" className="text-capitalize">
+                    {users ? users.user.name : ""}
                   </Link>
                   <span>
                     <Link to="#">|</Link>
                   </span>
                   <span>
-                        <Link to="/login">Login</Link>
-                      </span>
-                  {/* <form action="" method="post">
-                    <button type="submit" className="">
-                      {" "}
-                      Sign Out{" "}
-                    </button>
-                  </form> */}
+                    {users ? (
+                      users.user && (
+                        <button
+                          onClick={handleLogout}
+                          className="btn btn-danger"
+                        >
+                          Logout
+                        </button>
+                      )
+                    ) : (
+                      <Link to="/login">Login</Link>
+                    )}
+                  </span>
                 </div>
               </span>
               <div className="mob-sidebar">
@@ -73,7 +93,7 @@ const Header = () => {
                   id="offcanvasExample"
                   aria-labelledby="offcanvasExampleLabel"
                 >
-                  <div className="offcanvas-header">
+                  <div className="offcanvas-header shadow-sm">
                     <button
                       type="button"
                       className="btn-close"
@@ -82,19 +102,20 @@ const Header = () => {
                     ></button>
                     <div className="d-flex align-items-center is-auth">
                       <Link to="#" className="">
-                        admin
+                        {users ? users.user.name : ""}
                       </Link>
                       <span>
                         <Link to="#">|</Link>
                       </span>
                       <span>
-                      <Link to="/login">Login</Link>
+                        {users ? (
+                          users.user && (
+                            <button className="btn btn-danger">Logout</button>
+                          )
+                        ) : (
+                          <Link to="/login">Login</Link>
+                        )}
                       </span>
-                      {/* <form action="" method="post">
-                        <button type="submit" className="">
-                          Sign Out
-                        </button>
-                      </form> */}
                     </div>
                   </div>
                   <div className="offcanvas-body">
@@ -102,81 +123,88 @@ const Header = () => {
                       <li>
                         <NavLink to="/">Dashboard</NavLink>
                       </li>
-                      {role === "admin" && (
-                        <>
-                          <li>
-                            <NavLink to="/admin/doctor_list_page">
-                              Doctor
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/admin/hospital_list_page">
-                              Hospital
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/admin/new_user_request_list_page">
-                              New User Request
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/dr_report_format_list_page">
-                              Report Format
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/admin/all_report_list_page">
-                              Edit Access
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="#">Settings</NavLink>
-                          </li>
-                        </>
-                      )}
-                      {role === "hospital" && (
-                        <>
-                          <li>
-                            <NavLink to="/add-new-report">
-                              Add New Report
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/sent-report">Sent Reports</NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/complete-report">
-                              Completed Reports
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/all-report">All Reports</NavLink>
-                          </li>
-                        </>
-                      )}
-                      {role === "user" && (
-                        <>
-                          <li>
-                            <NavLink to="/add-new-report">
-                            Report Format
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/sent-report">Received Reports</NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/complete-report">
-                              Completed Reports
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink to="/all-report">All Reports</NavLink>
-                          </li>
-                        </>
-                      )}
-                      <li>
-                        <Link to="#">Back</Link>
-                      </li>
+                      {users
+                        ? users.user.role === "admin" && (
+                            <>
+                              <li>
+                                <NavLink to="/admin/doctor_list_page">
+                                  Doctor
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/admin/hospital_list_page">
+                                  Hospital
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/admin/new_user_request_list_page">
+                                  New User Request
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/dr_report_format_list_page">
+                                  Report Format
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/admin/all_report_list_page">
+                                  Edit Access
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="#">Settings</NavLink>
+                              </li>
+                            </>
+                          )
+                        : ""}
+                      {users
+                        ? users.user.role === "doctor" && (
+                            <>
+                              <li>
+                                <NavLink to="/add-new-report">
+                                  Add New Report
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/sent-report">
+                                  Sent Reports
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/complete-report">
+                                  Completed Reports
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/all-report">All Reports</NavLink>
+                              </li>
+                            </>
+                          )
+                        : ""}
+                      {users
+                        ? users.user.role === "hospital" && (
+                            <>
+                              <li>
+                                <NavLink to="/add-new-report">
+                                  Report Format
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/sent-report">
+                                  Received Reports
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/complete-report">
+                                  Completed Reports
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/all-report">All Reports</NavLink>
+                              </li>
+                            </>
+                          )
+                        : ""}
                     </ul>
                   </div>
                 </div>

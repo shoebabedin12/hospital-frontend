@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 import Layout from "./components/layout/Layout";
 import AddReport from "./pages/AddReport";
@@ -10,6 +11,7 @@ import CompleteReportEdit from "./pages/CompleteReportEdit";
 import CompleteReportView from "./pages/CompleteReportView";
 import DoctorList from "./pages/DoctorList";
 import EditAccess from "./pages/EditAccess";
+import EditReport from "./pages/EditReport";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import HospitalList from "./pages/HospitalList";
@@ -25,7 +27,6 @@ import ReportFormatEdit from "./pages/ReportFormatEdit";
 import ReportFormatView from "./pages/ReportFormatView";
 import SendReport from "./pages/SendReport";
 import Signup from "./pages/Signup";
-import EditReport from "./pages/EditReport";
 
 function App() {
   return (
@@ -37,7 +38,10 @@ function App() {
             <Route path="add-new-report" element={<AddReport />} />
             <Route path="sent-report" element={<SendReport />} />
             <Route path="complete-report" element={<CompleteReport />} />
-            <Route path="complete-report-view" element={<CompleteReportView />} />
+            <Route
+              path="complete-report-view"
+              element={<CompleteReportView />}
+            />
             <Route path="edit-report" element={<EditReport />} />
             <Route path="all-report" element={<AllReport />} />
             <Route path="doctor-list" element={<DoctorList />} />
@@ -52,8 +56,8 @@ function App() {
             <Route path="new-report-entry" element={<NewReportEntry />} />
             <Route path="*" element={<NoPage />} />
           </Route>
-            <Route path="complete-report-edit" element={<CompleteReportEdit />} />
-            <Route path="received-report-view" element={<ReceivedReportView />} />
+          <Route path="complete-report-edit" element={<CompleteReportEdit />} />
+          <Route path="received-report-view" element={<ReceivedReportView />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
